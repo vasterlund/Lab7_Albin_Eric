@@ -1,5 +1,5 @@
 ---
-title: "Lab5InYourFace"
+title: "Lab7SpaghettiBolognese"
 author: "Eric Herwin and Albin Västerlund"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -19,53 +19,5 @@ knitr::opts_chunk$set(fig.width=7, fig.height=7)
 
 ```
 
-This package contains two function who help's you to get the Longitude and Latitude of a address/destination so you can plot a map of the address/destination. 
-
-## The function
-
-1. **data_address:** 
-    + Input:
-*address*
-    + Returns:
-Returns a data.frame of longitude and latitude for the address/destination 
-
-2. **plot_address:** 
-    + Input:
-*address* and *zoom*
-    + Returns:
-Returns a plot of the address/destination
 
 
-
-## Examples
-Here is example of how to use the functions data_address and plot_address!
-
-### data_address
-
-```{r,echo=FALSE,message=FALSE}
-library(Lab5InYourFace)
-
-```
-
-
-```{r,message=FALSE}
-data_address("Stockholm")
-
-data_address("sweden")
-
-```
-
-### plot_address
-```{r,message=FALSE}
-plot_address("Stockholm",zoom=12)
-
-
-```
-
-
-
-```{r,message=FALSE}
-plot_address("sweden",zoom=4)
-
-
-```
