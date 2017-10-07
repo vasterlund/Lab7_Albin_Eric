@@ -24,19 +24,24 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                                                 lambda="numeric"),
                       methods = list(
                         
-                        initialize = function(formula, data, lambda=0){
+                        initialize = function(formula, data, lambda=0,normalize=TRUE){
                           
                           
                           ##### Beräkningar #####
                           x<-model.matrix(formula,data)
-                          x[,2:ncol(x)]<-apply(x[,2:ncol(x)],2,function(a) (a-mean(a))/sd(a))
-                          y<-all.vars(formula)[1]
-                          y<-as.matrix(data[,names(data)==y])
+                          if(normalize==TRUE){
+                            x[,2:ncol(x)]<-apply(x[,2:ncol(x)],2,function(a) (a-mean(a))/sd(a))
+                          }
                           y_namn<-all.vars(formula)[1]
+                          y<-as.matrix(data[,names(data)==y_namn])
                           data1<-data.frame(cbind(x[,2:ncol(x)],y))
                           names(data1)[ncol(data1)]<-y_namn
                           data<<-data1
                           
+                          ###
+                          # data<-data1
+                          # i=1
+                          ###
                           
                           fits_lista<-list()
                           beta_lista<-list()
@@ -66,9 +71,9 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           
                           ########### Spara beräkningar ###########
                           Call1<-character()
-                          Call1[1] <-deparse(substitute(data))
-                          Call1[2] <-Reduce(paste,deparse(formula))
-                          Call1[3] <-deparse(substitute(lambda))
+                          Call1[1] <<-deparse(substitute(data))
+                          Call1[2] <<-Reduce(paste,deparse(formula))
+                          Call1[3] <<-deparse(substitute(lambda))
                           Call<<-paste("linreg(formula = ",Call1[2],", data = ",Call1[1],", lambda=",Call1[3],")",sep="")
                           
                           Fits<<-fits_lista
