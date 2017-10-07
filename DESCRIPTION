@@ -7,7 +7,7 @@ Author: Albin Vasterlund, Eric Herwin
 Maintainer: Any issues, contact: <erihe068@student.liu.se>
 Description: Linreg Plus
 License: GPL-3
-Depends: R (>= 2.10)
+Depends: R (>= 2.10), tidyverse, nycflights13, plotly
 URL: https://github.com/vasterlund/Lab3_Albin_Eric
 LazyData: true
 RoxygenNote: 6.0.1

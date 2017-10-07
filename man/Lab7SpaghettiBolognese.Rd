@@ -6,7 +6,7 @@
 \alias{Lab7SpaghettiBolognese-package}
 \title{Lab7SpaghettiBolognese: Linreg}
 \description{
-This package use API from googlemaps to download Longitude and Latitude of a address/destination so you can plot it!
+Test
 }
 \author{
 Albin Vasterlund and Eric Herwin

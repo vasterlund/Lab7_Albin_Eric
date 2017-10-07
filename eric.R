@@ -65,7 +65,6 @@ for(i in 1:4){
 
 Var_test <- 1
 n <- 1
-while(Var_test[n]- )
 
 
   
@@ -83,39 +82,40 @@ data(airports)
 
 visualize_airport_delays <- function(){
   
+  data(flights)
+  data(airports)
+  
+  require(tidyverse)
+  
   data <- inner_join(airports, flights, by = c("faa" = "dest")) 
   
-  #Takes the mean 
-  joinedData <- sapply(1:length(unique(data$faa)), function(x){
-    temp <- filter(data, data$faa == unique(data$faa)[x])
-    mean(temp$arr_delay,na.rm = TRUE)
+  #doin some dplyr stuff
+
+  vect <- data %>%
+    group_by(faa) %>%
+    summarize(Mean = mean(arr_delay,na.rm = TRUE))
+  
+  coordin <- data %>%
+    group_by(faa) %>%
+    summarize(Coordinates = paste0("lat = ", lat[1],", lon = ", lon[1], collapse = " "))
+  
     
-  })
   
-  unique(data$faa)
+  graph_data <- data.frame(vect, coordin[,2])
+  
   ###PLOTTA
-  data
-  
+  require(ggplot2)
+  require(plotly) 
+  p <- ggplot(graph_data, aes(x = faa, y = Mean, label = Coordinates)) + 
+    geom_point() + labs(x = "Airports") + theme_bw() +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) 
+    
+  suppressMessages(ggplotly(p))
   
   
 }
 
+visualize_airport_delays()
 
 
 
-
-
-
-
-data <- filter(.data = flights, origin == airports$faa[85])
-
-
-
-mtcars %>% filter_(~cyl==carb)
-
-
-flights$arr_delay
-flights$origin
-airports$faa
-airports$lat
-airports$lon
