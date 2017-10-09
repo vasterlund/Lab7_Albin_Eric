@@ -14,6 +14,8 @@
 visualize_airport_delays <- function(){
   
   requireNamespace("tidyverse")
+  requireNamespace("nycflights13")
+  requireNamespace("plotly")
   
   data(flights)
   data(airports)
