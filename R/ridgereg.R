@@ -24,7 +24,7 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                                                 lambda="numeric"),
                       methods = list(
                         
-                        initialize = function(formula, data, lambda=0,normalize=TRUE){
+                        initialize = function(formula, data, lambda=0,normalize=FALSE){
                           
                           
                           ##### Beräkningar #####
@@ -71,9 +71,9 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           
                           ########### Spara beräkningar ###########
                           Call1<-character()
-                          Call1[1] <<-deparse(substitute(data))
-                          Call1[2] <<-Reduce(paste,deparse(formula))
-                          Call1[3] <<-deparse(substitute(lambda))
+                          Call1[1] <-deparse(substitute(data))
+                          Call1[2] <-Reduce(paste,deparse(formula))
+                          Call1[3] <-deparse(substitute(lambda))
                           Call<<-paste("linreg(formula = ",Call1[2],", data = ",Call1[1],", lambda=",Call1[3],")",sep="")
                           
                           Fits<<-fits_lista
