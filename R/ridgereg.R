@@ -24,7 +24,7 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                                                 lambda="numeric"),
                       methods = list(
                         
-                        initialize = function(formula, data, lambda=0,normalize=TRUE){
+                        initialize = function(formula, data, lambda=0,normalize=FALSE){
                           
                           
                           ##### Beräkningar #####
