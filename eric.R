@@ -20,8 +20,33 @@ formula <- Y ~ x1 + x2
 data <- data_test
 
 
+x<-model.matrix(formula,data)
+x[,2:ncol(x)]<-apply(x[,2:ncol(x)],2,function(a) (a-mean(a))/sd(a))
+y_namn<-all.vars(formula)[1]
+y<-as.matrix(data[,names(data)==y_namn])
+data<-data.frame(cbind(x[,2:ncol(x)],y))
+names(data)[ncol(data)]<-y_namn
+
+
+
 ###Model
 X_ind <- model.matrix(formula, data)
+# X_ind2 <- scale(X_ind[,2:ncol(X_ind)])
+# X_ind <- cbind(X_ind[,1], X_ind2)
+
+hej <- qr(X_ind)
+R <- qr.R(hej) 
+Q <- hej.Q(hej)
+
+#### QR delen ####
+
+
+forst_QR <- t(R) %*% R
+lambda_matr_QR <- matrix(0, nrow(forst_QR), ncol(forst_QR))
+diag(lambda_matr_QR) <- lambda
+B_ridge_QR <- solve(forst_QR+lambda_matr_QR) %*% t(X_ind) %*% Y
+
+
 
 forst <- t(X_ind) %*% X_ind
 lambda_matr <- matrix(0, nrow(forst), ncol(forst))
@@ -30,6 +55,23 @@ diag(lambda_matr) <- lambda
 B_ridge <- solve(forst+lambda_matr) %*% t(X_ind) %*% Y
   
 ###
+B_ridge
+lm.ridge(formula,data,lambda = lambda)
+
+ridgereg$new(formula, data=data, seq(0,0.5,0.1),normalize=FALSE)$print()
+
+
+lm.ridge(formula, data=data,lambda = seq(0,0.5,0.1))
+
+
+
+
+
+
+lm.ridge(formula, data,lambda =lambda)
+
+
+
   
 df <- nrow(data) - length(B_ridge)
 

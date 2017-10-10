@@ -38,10 +38,23 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           names(data1)[ncol(data1)]<-y_namn
                           data<<-data1
                           
+                          
+                          
                           ###
                           # data<-data1
                           # i=1
                           ###
+                          
+                          
+                          #### QR delen ####
+                          
+                          QR_X <- qr(x)
+                          R <- qr.R(QR_X) 
+                          # Q <- hej.Q(QR_X)
+                          
+                          forst_QR <- t(R) %*% R
+                          #################
+                          
                           
                           fits_lista<-list()
                           beta_lista<-list()
@@ -52,10 +65,17 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             I_lambda<-matrix(nrow=ncol(x),ncol=ncol(x),data = 0)
                             diag(I_lambda)<-anvanda_lambda
                             
+                            B_ridge_QR <- solve(forst_QR+I_lambda) %*% t(x) %*% y
                             
-                            b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
-                            y_fits<-x%*%b_hat
+                            
+                            # b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
+                            # y_fits<-x%*%b_hat
+                            # e<-y-y_fits
+                            
+                            b_hat <- B_ridge_QR
+                            y_fits<-x%*%B_ridge_QR
                             e<-y-y_fits
+                            
                             
                             coef<-as.numeric(b_hat)
                             names(coef)<-rownames(b_hat)
@@ -71,9 +91,9 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           
                           ########### Spara beräkningar ###########
                           Call1<-character()
-                          Call1[1] <<-deparse(substitute(data))
-                          Call1[2] <<-Reduce(paste,deparse(formula))
-                          Call1[3] <<-deparse(substitute(lambda))
+                          Call1[1] <-deparse(substitute(data))
+                          Call1[2] <-Reduce(paste,deparse(formula))
+                          Call1[3] <-deparse(substitute(lambda))
                           Call<<-paste("linreg(formula = ",Call1[2],", data = ",Call1[1],", lambda=",Call1[3],")",sep="")
                           
                           Fits<<-fits_lista
