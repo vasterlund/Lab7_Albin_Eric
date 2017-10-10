@@ -161,3 +161,109 @@ visualize_airport_delays()
 
 
 
+################################
+
+
+data(iris)
+
+data(BostonHousing)
+
+ridgereg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris,lambda=seq(0,1,0.1))$predict(c(0.2, 0.5))
+
+
+
+hej <- ridgereg$new(Petal.Length~Sepal.Width+Sepal.Length, data=iris,lambda=c(0.2,0.5))$coef()
+
+t(hej[[1]])
+
+training <- BostonHousing[1:(506*0.7),]
+test <- BostonHousing[(nrow(training)+1):nrow(BostonHousing),]
+
+
+
+
+
+
+
+training <- createDataPartition(BostonHousing$tax,p = 0.7)
+
+train_data <- BostonHousing[training$Resample1, ]
+test_data <- BostonHousing[-training$Resample1, ]
+
+
+#Models
+model_lm <- train(tax ~ .  ,data = train_data, method = "lm")
+model_leap_forward <- train(tax ~ .  ,data = train_data, method = "leapForward")
+
+hej <- summary(model_leap_forward)
+
+train_data[,-10][hej$which[4,-1]]
+
+model_leap_forward$modelInfo
+
+
+ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data ,lambda=seq(0.1,0.5,0.1))$print()
+
+
+
+
+colnames(train_data)
+
+
+
+
+
+types  <- list(type = "ridgereg", 
+               library = "Lab7SpaghettiBolognese")
+
+
+
+types$parameters <- data.frame(parameter = colnames(train_data),
+                               class= rep("numeric", 14)
+                               
+)
+
+GRIDs <- function(x, y, len = NULL, search = "grid") {
+  library(kernlab)
+  ## This produces low, middle and high values for sigma 
+  ## (i.e. a vector with 3 elements). 
+  sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+  ## To use grid search:
+  if(search == "grid") {
+    out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
+                       C = 2 ^((1:len) - 3))
+  } else {
+    ## For random search, define ranges for the parameters then
+    ## generate random values for them
+    rng <- extendrange(log(sigmas), f = .75)
+    out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
+                      C = 2^runif(len, min = -5, max = 8))
+  }
+  out
+}
+
+types$grid <- GRIDs
+
+svmFit <- function(x, y, wts, param, lev, last, weights, classProbs, ...) { 
+  ridgereg$new(x, 
+               data=iris,lambda,)$print()
+}
+
+
+
+
+
+train(tax ~ zn + indus + rad + medv  ,data = train_data, types)
+
+
+
+
+
+
+
+
+
+
+
+
+

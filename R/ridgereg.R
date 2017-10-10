@@ -126,12 +126,29 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             cat(paste(beta_avrund[[i]],collapse = "  "),sep="",collapse="\n")
                           }
                         },
-                        predict = function(){
+                        predict = function(pred_ict = NULL){
                           
-                          if(length(Fits)==1){
-                            svar<-Fits[[1]]
-                          }
-                          else svar<-Fits
+                          if(is.null(pred_ict) == FALSE){
+                            stopifnot(is.numeric(pred_ict))
+                            test_vect <- c(1,pred_ict)
+                            
+                            
+                              svar <- list()
+                              for(i in 1:length(Coef)){
+                                
+                                svar[i] <- test_vect %*% Coef[[i]]
+                              }
+
+                            names(svar) <- paste("lambda =",lambda)
+                            
+                          } else {
+                            
+                            if(length(Fits)==1){
+                              svar<-Fits[[1]]
+                            } else svar<-Fits
+                            
+                          } 
+                   
                           return(svar)
                         },
                         coef = function(){
