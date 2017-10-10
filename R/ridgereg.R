@@ -24,7 +24,7 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                                                 lambda="numeric"),
                       methods = list(
                         
-                        initialize = function(formula, data, lambda=0,normalize=FALSE){
+                        initialize = function(formula, data, lambda=0,normalize=TRUE){
                           
                           
                           ##### Beräkningar #####
@@ -142,5 +142,5 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           else svar<-Coef
                           return(svar)
                         })
-
+                      
 )
