@@ -38,23 +38,10 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           names(data1)[ncol(data1)]<-y_namn
                           data<<-data1
                           
-                          
-                          
                           ###
                           # data<-data1
                           # i=1
                           ###
-                          
-                          
-                          #### QR delen ####
-                          
-                          QR_X <- qr(x)
-                          R <- qr.R(QR_X) 
-                          # Q <- hej.Q(QR_X)
-                          
-                          forst_QR <- t(R) %*% R
-                          #################
-                          
                           
                           fits_lista<-list()
                           beta_lista<-list()
@@ -65,17 +52,10 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             I_lambda<-matrix(nrow=ncol(x),ncol=ncol(x),data = 0)
                             diag(I_lambda)<-anvanda_lambda
                             
-                            B_ridge_QR <- solve(forst_QR+I_lambda) %*% t(x) %*% y
                             
-                            
-                            # b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
-                            # y_fits<-x%*%b_hat
-                            # e<-y-y_fits
-                            
-                            b_hat <- B_ridge_QR
-                            y_fits<-x%*%B_ridge_QR
+                            b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
+                            y_fits<-x%*%b_hat
                             e<-y-y_fits
-                            
                             
                             coef<-as.numeric(b_hat)
                             names(coef)<-rownames(b_hat)
@@ -126,29 +106,12 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             cat(paste(beta_avrund[[i]],collapse = "  "),sep="",collapse="\n")
                           }
                         },
-                        predict = function(pred_ict = NULL){
+                        predict = function(){
                           
-                          if(is.null(pred_ict) == FALSE){
-                            stopifnot(is.numeric(pred_ict))
-                            test_vect <- c(1,pred_ict)
-                            
-                            
-                              svar <- list()
-                              for(i in 1:length(Coef)){
-                                
-                                svar[i] <- test_vect %*% Coef[[i]]
-                              }
-
-                            names(svar) <- paste("lambda =",lambda)
-                            
-                          } else {
-                            
-                            if(length(Fits)==1){
-                              svar<-Fits[[1]]
-                            } else svar<-Fits
-                            
-                          } 
-                   
+                          if(length(Fits)==1){
+                            svar<-Fits[[1]]
+                          }
+                          else svar<-Fits
                           return(svar)
                         },
                         coef = function(){
@@ -159,5 +122,5 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           else svar<-Coef
                           return(svar)
                         })
-                      
+
 )
