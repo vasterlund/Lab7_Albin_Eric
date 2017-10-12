@@ -91,6 +91,7 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           #################################
                         },
                         print = function(){
+                          "Give you a nice view of the calculation"
                           
                           beta_avrund<-lapply(Coef, function(a) round(a,5))
                           
@@ -117,6 +118,8 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           }
                         },
                         predict = function(values=NULL){
+                          "Give you the fited values if the input is NULL and 
+                          the predicted values if you have some new input"
                           
                           
                           if(is.null(values)==TRUE){
@@ -152,6 +155,9 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                          
                         },
                         coef = function(){
+                          "Give you the coef values as a numeric vector"
+                          
+                          
                           
                           if(length(Coef)==1){
                             svar<-Coef[[1]]
