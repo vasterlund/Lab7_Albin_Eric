@@ -2,6 +2,13 @@ library(tidyverse)
 library(nycflights13)
 library(plotly)
 library(MASS)
+library(mlbench)
+library(caret)
+library(tidyverse)
+install.packages("tidyverse")
+
+
+
 
 
 ##### Skapa datamaterialet

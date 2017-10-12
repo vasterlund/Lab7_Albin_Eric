@@ -18,6 +18,16 @@ This function make a "Reference Class" with class=ridgereg for a Ridge Regressio
 \item{\code{lambda}}{The lambda value}
 }}
 
+\section{Methods}{
+
+\describe{
+\item{\code{coef()}}{Give you the coef values as a numeric vector}
+
+\item{\code{predict(values = NULL)}}{Give you the fited values if the input is NULL and 
+the predicted values if you have some new input}
+
+\item{\code{print()}}{Give you a nice view of the calculation}
+}}
 
 \examples{
 data(iris)
