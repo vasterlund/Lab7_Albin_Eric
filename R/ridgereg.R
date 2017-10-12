@@ -38,6 +38,9 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           names(data1)[ncol(data1)]<-y_namn
                           data<<-data1
                           
+                          ############
+                          # data<-data1
+                          ############
                           ###
                           # data<-data1
                           # i=1
@@ -79,6 +82,13 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           Fits<<-fits_lista
                           Coef<<-beta_lista
                           lambda<<-lambda
+                          
+                          #################################
+                          # Call<-paste("linreg(formula = ",Call1[2],", data = ",Call1[1],", lambda=",Call1[3],")",sep="")
+                          # Fits<-fits_lista
+                          # Coef<-beta_lista
+                          # lambda<-lambda
+                          #################################
                         },
                         print = function(){
                           
@@ -106,13 +116,40 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             cat(paste(beta_avrund[[i]],collapse = "  "),sep="",collapse="\n")
                           }
                         },
-                        predict = function(){
+                        predict = function(values=NULL){
                           
-                          if(length(Fits)==1){
-                            svar<-Fits[[1]]
+                          
+                          if(is.null(values)==TRUE){
+                            if(length(Fits)==1){
+                              svar<-Fits[[1]]
+                            }
+                            else svar<-Fits
+                            return(svar)
+                          
                           }
-                          else svar<-Fits
-                          return(svar)
+                          
+                          
+                          
+                          if (is.null(values)==FALSE){
+                            if((all(names(values)==names(Coef[[1]][2:length(Coef[[1]])])))==FALSE){
+                              stop("Vaiables not matchs")
+                            }
+                            
+                            values2<-cbind("(Intercept)"=1,values)
+                            
+                            
+                            predict<-list()
+                            for(i in 1: length(lambda)){
+                              predict[[i]]<-as.numeric((Coef[[i]])%*%t(as.matrix(values2)))
+                            }
+                            return(predict)
+                          }
+                            
+                            
+                            
+                            
+                            
+                         
                         },
                         coef = function(){
                           
