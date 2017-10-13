@@ -1,0 +1,123 @@
+---
+title: "Lab7SpaghettiBolognese"
+author: "Albin and Eric"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+```{r,echo=FALSE, message=FALSE}
+library(mlbench)
+library(caret)
+library(MASS)
+library(Lab7SpaghettiBolognese)
+data("BostonHousing")
+```
+
+
+## 1)
+
+We will devide the `BostonHousing` dataset in to a training and a test set.
+
+```{r}
+set.seed(12345)
+
+training <- createDataPartition(BostonHousing$tax,p = 0.7)
+
+train_data <- BostonHousing[training$Resample1, ]
+test_data <- BostonHousing[-training$Resample1, ]
+```
+
+
+
+
+## 2)
+
+This is our full linear model with the respons variable `tax`.
+
+```{r}
+model_lm <- train(tax ~ .  ,data = train_data, method = "lm")
+sol <- summary(model_lm)
+sol
+```
+
+A lot of parameters is un-significant. So we need to reduce our model. We do it by forward selection.
+
+
+```{r}
+train_leapForward(data = train_data, formula = tax ~ .)$model
+
+model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+summary(model_lm)
+```
+
+We can see that the model choosen contains the expnatory variables: `zn`, `indus`, `rad` and `medv`. 
+
+
+
+## 3)
+
+Now we want to evaluate the model and compare it with the other model in the forward selection.
+
+```{r}
+train_leapForward(data = train_data, formula = tax ~ .)$leapForward
+
+```
+
+The final model have smalest RMSE, and highest adjusted r-square which makes the model the best one. 
+
+
+
+
+## 4)
+
+In this task we will test different $\lambda$ for our `ridereg()` function. We had to do a function with our train for our vingnette to actually work.
+
+```{r}
+ridgereg_train(lambda = c(3,4,6,8,5), normalize = TRUE)
+
+```
+
+We test for the values $\lambda = 3,4,6,8, 5$ and we get that the best lambda is 8 when looking at the `RMSE`. 
+
+
+
+## 5)
+
+We will do a 10-fold cross-validation in the training data set. 
+
+
+```{r}
+
+ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE,normalize = TRUE)
+
+```
+
+
+We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$. We set the normalize to `FALSE` do we can compare the `RMSE` values. 
+
+
+## 6)
+
+
+We can see that by just looking at the `RSME` value the model with the lowest is from the cross-validated model with $\lambda = 3$.
+
+
+
+```{r}
+model <- ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE,normalize = TRUE)
+model$finalModel$print()
+```
+
+
+We recive a print-out from the final model.
+
+
+
+
+
