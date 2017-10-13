@@ -2,13 +2,34 @@
 % Please edit documentation in R/ridgereg_train.R
 \name{ridgereg_train}
 \alias{ridgereg_train}
-\title{Extra}
+\title{Train function}
 \usage{
-ridgereg_train(lambda = 0)
+ridgereg_train(lambda = 0, cross_val = FALSE, fold_count = 10,
+  repeat_count = 10, data = NULL, formula = NULL, set_seed = 12345,
+  p = 0.7)
 }
 \arguments{
-\item{lambda}{lambda}
+\item{lambda}{Your lambda values. A numeric vector}
+
+\item{cross_val}{False or True}
+
+\item{fold_count}{If cross_val=TRUE. Then how many values will it fold.}
+
+\item{repeat_count}{If cross_val=TRUE. Then how many times will it be cross-validation.}
+
+\item{data}{Your data. If data=NULL the data BostonHousing is used}
+
+\item{formula}{Your formula. If formula=NULL the formula tax ~ zn + indus + rad + medv is used}
+
+\item{set_seed}{Your seed. If set_seed=NULL then is no seed used.}
+
+\item{p}{The proportion of trainging and test if BostonHousing data is used}
 }
 \description{
-Extra
+A train function for the model ridgereg
+}
+\examples{
+#library(Lab7SpaghettiBolognese)
+#ridgereg_train(seq(0,100,10))
+
 }

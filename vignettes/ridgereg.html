@@ -74,41 +74,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<p>Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The <code>html_vignette</code> output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The <code>html_vignette</code> format:</p>
 <div id="section" class="section level2">
 <h2>1)</h2>
 <p>We will devide the <code>BostonHousing</code> dataset in to a training and a test set.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">training &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(BostonHousing$tax,<span class="dt">p =</span> <span class="fl">0.7</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12345</span>)
+training &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(BostonHousing$tax,<span class="dt">p =</span> <span class="fl">0.7</span>)
 
 train_data &lt;-<span class="st"> </span>BostonHousing[training$Resample1, ]
 test_data &lt;-<span class="st"> </span>BostonHousing[-training$Resample1, ]</code></pre></div>
 </div>
 <div id="section-1" class="section level2">
 <h2>2)</h2>
-<p>This is our linear model with the variable <code>tax</code>.</p>
+<p>This is our full linear model with the respons variable <code>tax</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm &lt;-<span class="st"> </span><span class="kw">train</span>(tax ~<span class="st"> </span>.  ,<span class="dt">data =</span> train_data, <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
 sol &lt;-<span class="st"> </span><span class="kw">summary</span>(model_lm)
-sol$coefficients</code></pre></div>
-<pre><code>##                  Estimate  Std. Error    t value     Pr(&gt;|t|)
-## (Intercept) 217.918783374 77.99796452  2.7939035 5.501035e-03
-## crim         -0.334771820  0.42936836 -0.7796844 4.361159e-01
-## zn            1.045060369  0.19851656  5.2643487 2.490763e-07
-## indus         7.532283678  0.80153015  9.3973804 8.230792e-19
-## chas1       -26.304322964 13.42657045 -1.9591245 5.091034e-02
-## nox           8.345399571 56.37199235  0.1480416 8.823972e-01
-## rm           -3.438701496  6.66577485 -0.5158742 6.062756e-01
-## age           0.180452274  0.19065847  0.9464687 3.445778e-01
-## dis          -2.693008713  2.91973243 -0.9223478 3.569974e-01
-## rad          14.084480869  0.59421889 23.7025128 3.684970e-74
-## ptratio       1.581013094  2.04351934  0.7736717 4.396594e-01
-## b            -0.005928625  0.04045593 -0.1465453 8.835773e-01
-## lstat        -1.112029616  0.83012871 -1.3395870 1.812691e-01
-## medv         -1.517713975  0.63229816 -2.4003138 1.691494e-02</code></pre>
-<p>This for evaluating this model we perform a forward selection of the model.</p>
+sol</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -221.339  -21.555   -3.834   16.336  255.119 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 194.014102  75.973156   2.554 0.011091 *  
+## crim         -0.232583   0.438838  -0.530 0.596457    
+## zn            0.732383   0.196816   3.721 0.000232 ***
+## indus         7.526441   0.799101   9.419  &lt; 2e-16 ***
+## chas1       -24.782006  13.163465  -1.883 0.060598 .  
+## nox          49.796516  56.445143   0.882 0.378282    
+## rm            0.833982   6.410553   0.130 0.896568    
+## age          -0.013967   0.185628  -0.075 0.940068    
+## dis          -1.189519   3.021266  -0.394 0.694036    
+## rad          13.998331   0.592961  23.608  &lt; 2e-16 ***
+## ptratio       0.519162   2.048294   0.253 0.800064    
+## b            -0.009935   0.039951  -0.249 0.803766    
+## lstat        -0.759768   0.818939  -0.928 0.354193    
+## medv         -1.535985   0.633998  -2.423 0.015925 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 57.65 on 342 degrees of freedom
+## Multiple R-squared:   0.89,  Adjusted R-squared:  0.8858 
+## F-statistic: 212.8 on 13 and 342 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>A lot of parameters is un-significant. So we need to reduce our model. We do it by forward selection.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_leap_forward &lt;-<span class="st"> </span><span class="kw">train</span>(tax ~<span class="st"> </span>.  ,<span class="dt">data =</span> train_data, <span class="dt">method =</span> <span class="st">&quot;leapForward&quot;</span>)
 
-hej &lt;-<span class="kw">summary</span>(model_leap_forward)
-hej$which</code></pre></div>
+summary_model_leap_forward &lt;-<span class="kw">summary</span>(model_leap_forward)
+summary_model_leap_forward$which</code></pre></div>
 <pre><code>##   (Intercept)  crim    zn indus chas1   nox    rm   age   dis  rad ptratio
 ## 1        TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE TRUE   FALSE
 ## 2        TRUE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE TRUE   FALSE
@@ -119,10 +134,6 @@ hej$which</code></pre></div>
 ## 2 FALSE FALSE FALSE
 ## 3 FALSE FALSE FALSE
 ## 4 FALSE FALSE  TRUE</code></pre>
-<p>We can see that the model choosen contains the expnatory variables: <code>zn</code>, <code>indus</code>, <code>rad</code> and <code>medv</code>.</p>
-</div>
-<div id="section-2" class="section level2">
-<h2>3)</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm &lt;-<span class="st"> </span><span class="kw">train</span>(tax ~<span class="st"> </span>zn +<span class="st"> </span>indus +<span class="st"> </span>rad +<span class="st"> </span>medv  ,<span class="dt">data =</span> train_data, <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>)
 <span class="kw">summary</span>(model_lm)</code></pre></div>
 <pre><code>## 
@@ -131,36 +142,71 @@ hej$which</code></pre></div>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -227.970  -19.541   -4.727   16.704  256.385 
+## -226.315  -20.065   -2.946   16.778  257.788 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 208.0393    13.4059  15.519  &lt; 2e-16 ***
-## zn            0.8455     0.1615   5.237 2.83e-07 ***
-## indus         7.8351     0.6483  12.085  &lt; 2e-16 ***
-## rad          14.1147     0.4430  31.863  &lt; 2e-16 ***
-## medv         -1.3547     0.3873  -3.498 0.000529 ***
+## (Intercept) 206.1785    13.1422  15.688  &lt; 2e-16 ***
+## zn            0.6757     0.1549   4.363 1.69e-05 ***
+## indus         7.7972     0.6298  12.381  &lt; 2e-16 ***
+## rad          14.1162     0.4355  32.413  &lt; 2e-16 ***
+## medv         -1.2798     0.3859  -3.317  0.00101 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 57.69 on 351 degrees of freedom
-## Multiple R-squared:  0.8827, Adjusted R-squared:  0.8814 
-## F-statistic: 660.3 on 4 and 351 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>We rate this model!</p>
+## Residual standard error: 57.39 on 351 degrees of freedom
+## Multiple R-squared:  0.8881, Adjusted R-squared:  0.8868 
+## F-statistic: 696.4 on 4 and 351 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We can see that the model choosen contains the expnatory variables: <code>zn</code>, <code>indus</code>, <code>rad</code> and <code>medv</code>.</p>
+</div>
+<div id="section-2" class="section level2">
+<h2>3)</h2>
+<p>Now we want to evaluate the model and compare it with the other model in the forward selection.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_leap_forward</code></pre></div>
+<pre><code>## Linear Regression with Forward Selection 
+## 
+## 356 samples
+##  13 predictor
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 356, 356, 356, 356, 356, 356, ... 
+## Resampling results across tuning parameters:
+## 
+##   nvmax  RMSE      Rsquared   MAE     
+##   2      59.50530  0.8775280  36.72526
+##   3      58.95393  0.8797616  36.51118
+##   4      58.27806  0.8824662  36.70284
+## 
+## RMSE was used to select the optimal model using  the smallest value.
+## The final value used for the model was nvmax = 4.</code></pre>
+<p>The final model have smalest RMSE, and highest adjusted r-square which make the model the best one.</p>
 </div>
 <div id="section-3" class="section level2">
 <h2>4)</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ridgereg$<span class="kw">new</span>(tax ~<span class="st"> </span>zn +<span class="st"> </span>indus +<span class="st"> </span>rad +<span class="st"> </span>medv, <span class="dt">data=</span>train_data ,<span class="dt">lambda=</span><span class="kw">seq</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.1</span>))$<span class="kw">print</span>()</code></pre></div>
-<pre><code>## Call:
-## linreg(formula = tax ~ zn + indus + rad + medv, data = train_data, lambda=seq(0.1, 0.5, 0.1))
+<p>In this task we will</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># List of our own model</span>
+<span class="kw">ridgereg_train</span>(<span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">5</span>))</code></pre></div>
+<pre><code>## 356 samples
+##   4 predictor
 ## 
-## Coefficients:
-## lambda  (Intercept)  zn  indus  rad  medv
-##    0.1    406.53187  19.17591  53.36944  121.35109  -12.47388
-##    0.2    406.41774  19.15841  53.36477  121.31172  -12.4808
-##    0.3    406.30368  19.14093  53.36011  121.27238  -12.48771
-##    0.4    406.18967  19.12346  53.35543  121.23307  -12.49461
-##    0.5    406.07574  19.10601  53.35075  121.19379  -12.5015</code></pre>
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 356, 356, 356, 356, 356, 356, ... 
+## Resampling results across tuning parameters:
+## 
+##   lambda  RMSE      Rsquared   MAE     
+##   3       1973.790  0.8442959  1636.767
+##   4       1965.139  0.8451900  1628.195
+##   5       1956.559  0.8460672  1619.686
+##   6       1948.049  0.8469279  1611.243
+##   8       1931.236  0.8486000  1594.553
+## 
+## RMSE was used to select the optimal model using  the smallest value.
+## The final value used for the model was lambda = 8.</code></pre>
+</div>
+<div id="section-4" class="section level2">
+<h2>5)</h2>
 </div>
 
 
