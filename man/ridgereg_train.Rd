@@ -6,7 +6,7 @@
 \usage{
 ridgereg_train(lambda = 0, cross_val = FALSE, fold_count = 10,
   repeat_count = 10, data = NULL, formula = NULL, set_seed = 12345,
-  p = 0.7)
+  p = 0.7, normalize = TRUE)
 }
 \arguments{
 \item{lambda}{Your lambda values. A numeric vector}
@@ -24,6 +24,8 @@ ridgereg_train(lambda = 0, cross_val = FALSE, fold_count = 10,
 \item{set_seed}{Your seed. If set_seed=NULL then is no seed used.}
 
 \item{p}{The proportion of trainging and test if BostonHousing data is used}
+
+\item{normalize}{Normalize or not.}
 }
 \description{
 A train function for the model ridgereg
