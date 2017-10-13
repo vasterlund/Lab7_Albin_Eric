@@ -49,7 +49,7 @@ A lot of parameters is un-significant. So we need to reduce our model. We do it 
 
 
 ```{r}
-train_leapForward()$model
+train_leapForward(data = train_data, formula = tax ~ .)$model
 
 model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
 summary(model_lm)
@@ -64,7 +64,7 @@ We can see that the model choosen contains the expnatory variables: `zn`, `indus
 Now we want to evaluate the model and compare it with the other model in the forward selection.
 
 ```{r}
-train_leapForward()$leapForward
+train_leapForward(data = train_data, formula = tax ~ .)$leapForward
 
 ```
 

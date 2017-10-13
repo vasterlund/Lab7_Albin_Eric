@@ -4,7 +4,12 @@
 \alias{train_leapForward}
 \title{leapForward in a function}
 \usage{
-train_leapForward()
+train_leapForward(formula, data)
+}
+\arguments{
+\item{formula}{Formula}
+
+\item{data}{Data}
 }
 \description{
 train(method=leapForward) dont work in Vignette

@@ -1,9 +1,11 @@
 #'@title leapForward in a function
 #'@description train(method=leapForward) dont work in Vignette
+#'@param formula Formula
+#'@param data Data
 #'@export
-train_leapForward<-function(){
+train_leapForward<-function(formula, data){
   
-  model_leap_forward <- train(tax ~ .  ,data = train_data, method = "leapForward")
+  model_leap_forward <- train(formula ,data , method = "leapForward")
   
   summary_model_leap_forward <-summary(model_leap_forward)
   
