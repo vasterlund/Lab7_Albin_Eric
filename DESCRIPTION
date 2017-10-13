@@ -12,4 +12,3 @@ URL: https://github.com/vasterlund/Lab7_Albin_Eric
 LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat, knitr, rmarkdown, nycflights13
-VignetteBuilder: knitr
