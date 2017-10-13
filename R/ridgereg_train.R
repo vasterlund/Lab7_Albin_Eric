@@ -1,7 +1,12 @@
-#'@title Extra
-#'@description Extra
-#'@param lambda lambda
-#'@param data If you dont put in any data 
+#'@title Train function
+#'@description A train function for the model ridgereg
+#'@param lambda Your lambda values. A numeric vector
+#'@param cross_val False or True
+#'@param fold_count If cross_val=TRUE. Then how many times will it be cross-validation
+#'@param data Your data. If data=NULL the data BostonHousing is used
+#'@param formula Your formula. If formula=NULL the formula tax ~ zn + indus + rad + medv is used
+#'@param set_seed Your seed. If set_seed=NULL then is no seed used.
+#'@param p The proportion of trainging and test if BostonHousing data is used
 #'
 #' @export 
 ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,data=NULL,formula=NULL,set_seed=12345,p=0.7){
