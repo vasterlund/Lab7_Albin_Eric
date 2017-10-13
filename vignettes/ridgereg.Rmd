@@ -9,7 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
 
 ```{r,echo=FALSE, message=FALSE}
@@ -25,6 +24,7 @@ data("BostonHousing")
 We will devide the `BostonHousing` dataset in to a training and a test set.
 
 ```{r}
+set.seed(12345)
 training <- createDataPartition(BostonHousing$tax,p = 0.7)
 
 train_data <- BostonHousing[training$Resample1, ]
@@ -36,21 +36,25 @@ test_data <- BostonHousing[-training$Resample1, ]
 
 ## 2)
 
-This is our linear model with the variable `tax`.
+This is our full linear model with the respons variable `tax`.
 
 ```{r}
 model_lm <- train(tax ~ .  ,data = train_data, method = "lm")
 sol <- summary(model_lm)
-sol$coefficients
+sol
 ```
 
-This for evaluating this model we perform a forward selection of the model.
+A lot of parameters is un-significant. So we need to reduce our model. We do it by forward selection.
+
 
 ```{r}
 model_leap_forward <- train(tax ~ .  ,data = train_data, method = "leapForward")
 
-hej <-summary(model_leap_forward)
-hej$which
+summary_model_leap_forward <-summary(model_leap_forward)
+summary_model_leap_forward$which
+
+model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+summary(model_lm)
 
 
 ```
@@ -61,12 +65,16 @@ We can see that the model choosen contains the expnatory variables: `zn`, `indus
 
 ## 3)
 
+Now we want to evaluate the model and compare it with the other model in the forward selection.
+
 ```{r}
-model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
-summary(model_lm)
+model_leap_forward
+
 ```
 
-We rate this model!
+The final model have smalest RMSE, and highest adjusted r-square which make the model the best one. 
+
+
 
 
 ## 4)
