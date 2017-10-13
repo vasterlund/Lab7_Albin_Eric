@@ -8,13 +8,14 @@
 #'@param formula Your formula. If formula=NULL the formula tax ~ zn + indus + rad + medv is used
 #'@param set_seed Your seed. If set_seed=NULL then is no seed used.
 #'@param p The proportion of trainging and test if BostonHousing data is used
+#'@param normalize Normalize or not.
 #'
 #'@examples
 #'#library(Lab7SpaghettiBolognese)
 #'#ridgereg_train(seq(0,100,10))
 #'
 #' @export 
-ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,data=NULL,formula=NULL,set_seed=12345,p=0.7){
+ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,data=NULL,formula=NULL,set_seed=12345,p=0.7,normalize=TRUE){
   
   ridgeregg  <- list(type = "Regression", 
                      library = "Lab7SpaghettiBolognese",
@@ -35,7 +36,7 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
       x
     else as.data.frame(x)
     dat$.outcome <- y
-    out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, ...)
+    out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, normalize=normalize, ...)
     
     out
   }

@@ -84,7 +84,7 @@ In this task we will test different $\lambda$ for our `ridereg()` function. We h
 
 ```{r}
 # List of our own model
-ridgereg_train(lambda = c(3,4,6,8,5))
+ridgereg_train(lambda = c(3,4,6,8,5), normalize = FALSE)
 
 ```
 
@@ -99,12 +99,12 @@ We will do a 10-fold cross-validation in the training data set.
 
 ```{r}
 
-ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE)
+ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE,normalize = FALSE)
 
 ```
 
 
-We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$.
+We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$. We set the normalize to `FALSE` do we can compare the `RMSE` values. 
 
 
 ## 6)
@@ -112,7 +112,7 @@ We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$.
 
 ```{r, echo=FALSE}
 
-ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE)
+#ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE, normalize = FALSE)
 
 
 ```
