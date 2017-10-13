@@ -7,7 +7,7 @@ Author: Albin Vasterlund, Eric Herwin
 Maintainer: Any issues, contact: <erihe068@student.liu.se>
 Description: Linreg Plus
 License: GPL-3
-Depends: R (>= 2.10), magrittr, ggplot2, dplyr, MASS, caret, mlbench
+Depends: R (>= 2.10), magrittr, ggplot2, dplyr, MASS, caret, mlbench, leaps
 URL: https://github.com/vasterlund/Lab7_Albin_Eric
 LazyData: true
 RoxygenNote: 6.0.1
