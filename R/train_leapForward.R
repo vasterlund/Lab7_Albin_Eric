@@ -11,4 +11,5 @@ train_leapForward<-function(formula, data){
   
   lasta <- list(leapForward = model_leap_forward, 
                 model =summary_model_leap_forward$which)
+  lasta
 }
