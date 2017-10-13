@@ -106,17 +106,16 @@ We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$. We set the 
 ## 6)
 
 
-We can see that by just looking at the `RSME` value the model with the lowest is from the cross-validated model with $\lambda = 3$.
+We can see that by just looking at the `RSME` value that the model with the lowest is from the linear model.
 
 
 
 ```{r}
-model <- ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE,normalize = TRUE)
-model$finalModel$print()
+summary(model_lm)
 ```
 
 
-We recive a print-out from the final model.
+We recive a print-out from the best model of the three. There would probably be more investigation of what $\lambda$ would be the best to get best model.
 
 
 
