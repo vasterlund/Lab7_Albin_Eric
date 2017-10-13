@@ -79,15 +79,6 @@ getModelInfo(model = "lm", regex = FALSE)
 ####
 ridgereg_train<-function(lambda=0,p=0.7,set_seed=NULL){
   
-  data(BostonHousing)
-  if(!is.null(set_seed)){
-    set.seed(12345)
-  }
-  training <- createDataPartition(BostonHousing$tax,p = p)
-  train_data <- BostonHousing[training$Resample1, ]
-  test_data <- BostonHousing[-training$Resample1, ]
-  
-  
   ridgeregg  <- list(type = "Regression", 
                      library = "Lab7SpaghettiBolognese",
                      loop = NULL,
