@@ -62,7 +62,7 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
   
   
   if(cross_val==FALSE){
-    return(train(formula  ,data = train_data, ridgeregg))
+    return(train(formula  ,data = data, ridgeregg))
   }
   else if (cross_val==TRUE){
     fitControl <- trainControl(## 10-fold CV
@@ -70,7 +70,7 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
       number = fold_count,
       ## repeated ten times
       repeats = repeat_count)
-    return(train(formula ,data = train_data, method = ridgeregg,trControl = fitControl))
+    return(train(formula ,data = data, method = ridgeregg,trControl = fitControl))
     
     
   }
