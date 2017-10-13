@@ -217,38 +217,42 @@ colnames(train_data)
 
 ################
 
-
-ridgeregg  <- list(type = "Regression", 
-               library = "Lab7SpaghettiBolognese",
-               loop = NULL,
-               prob = NULL)
-
-ridgeregg$parameters <- data.frame(parameter = "lambda",
-                  class = "numeric",
-                  label = "Ridge Regression")
-
-
-ridgeregg$grid <- function (x, y, len = NULL, search = "grid") 
-  data.frame(lambda = c(0.5, 0.4))
-
-
-ridgeregg$fit <- function (x, y, wts, param, lev, last, classProbs, ...) 
-{
-  dat <- if (is.data.frame(x)) 
-    x
-  else as.data.frame(x)
-  dat$.outcome <- y
-  out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, ...)
+ridgereg_train<-function(lambda=0){
   
-  out
+  ridgeregg  <- list(type = "Regression", 
+                     library = "Lab7SpaghettiBolognese",
+                     loop = NULL,
+                     prob = NULL)
+  
+  ridgeregg$parameters <- data.frame(parameter = "lambda",
+                                     class = "numeric",
+                                     label = "Ridge Regression")
+  
+  
+  ridgeregg$grid <- function (x, y, len = NULL, search = "grid"){
+    data.frame(lambda = lambda)
+  } 
+  
+  ridgeregg$fit <- function (x, y, wts, param, lev, last, classProbs, ...) {
+    dat <- if (is.data.frame(x)) 
+      x
+    else as.data.frame(x)
+    dat$.outcome <- y
+    out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, ...)
+    
+    out
+  }
+  
+  ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
+    if (!is.data.frame(newdata)) 
+      newdata <- as.data.frame(newdata)
+    modelFit$predict(newdata)
+  }
+  
+  
+  ridgeregg
+  
 }
-
-ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
-  if (!is.data.frame(newdata)) 
-   newdata <- as.data.frame(newdata)
-   modelFit$predict(newdata)
-}
-
 
 ####################
 
@@ -259,15 +263,24 @@ ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
 getModelInfo(model = "lm", regex = FALSE)
 
 
+interesting <- ridgereg_train(0.5)
 
-hej <- train(tax ~ zn + indus + rad + medv  ,data = train_data, ridgeregg)
-hej <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg)
+
 
 
 
 hej$finalModel$print()
 
+fitControl <- trainControl(## 10-fold CV
+  method = "repeatedcv",
+  number = 10,
+  ## repeated ten times
+  repeats = 10)
 
+
+
+train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg, trControl = fitControl)
 
 
 
