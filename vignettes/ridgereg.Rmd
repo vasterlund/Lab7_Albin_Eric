@@ -65,7 +65,7 @@ We can see that the model choosen contains the expnatory variables: `zn`, `indus
 Now we want to evaluate the model and compare it with the other model in the forward selection.
 
 ```{r}
-train_leapForward(data = train_data, formula = tax ~ .)$leapForward
+#train_leapForward(data = train_data, formula = tax ~ .)$leapForward
 
 ```
 
