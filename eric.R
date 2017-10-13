@@ -265,7 +265,7 @@ getModelInfo(model = "lm", regex = FALSE)
 
 interesting <- ridgereg_train(0.5)
 
-train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg)
+train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
 
 
 

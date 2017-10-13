@@ -11,5 +11,5 @@ Depends: R (>= 2.10), tidyverse, nycflights13, mlbench, caret
 URL: https://github.com/vasterlund/Lab3_Albin_Eric
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat, knitr, rmarkdown
+Suggests: testthat, knitr, rmarkdown, MASS
 VignetteBuilder: knitr
