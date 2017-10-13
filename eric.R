@@ -264,13 +264,16 @@ getModelInfo(model = "lm", regex = FALSE)
 
 
 interesting <- ridgereg_train(0.5)
+lambda=c(0.5, 0.4)
 
-train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg)
 
 
 
 
 hej$finalModel$print()
+
+
 
 fitControl <- trainControl(## 10-fold CV
   method = "repeatedcv",

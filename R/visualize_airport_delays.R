@@ -13,6 +13,7 @@
 
 visualize_airport_delays <- function(){
   
+  library(tidyverse)
   requireNamespace("tidyverse")
   requireNamespace("nycflights13")
   

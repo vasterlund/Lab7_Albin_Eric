@@ -79,22 +79,31 @@ The final model have smalest RMSE, and highest adjusted r-square which make the 
 
 ## 4)
 
-In this task we will 
+In this task we will test different $\lambda$ for our `ridereg()` function. We had to do a function with our train for our vingnette to actually work.
 
 ```{r}
 # List of our own model
-ridgereg_train(c(3,4,6,8,5))
+ridgereg_train(lambda = c(3,4,6,8,5))
 
 ```
 
-
+We test for the values $\lambda = 3,4,6,8, 5$ and we get that the best lambda is 8 when looking at the `RMSE`. 
 
 
 
 ## 5)
 
+We will do a 10-fold cross-validation in the training data set. 
 
 
+```{r}
+
+ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE)
+
+```
+
+
+We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$.
 
 
 
