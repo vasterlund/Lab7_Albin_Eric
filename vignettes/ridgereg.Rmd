@@ -50,10 +50,10 @@ A lot of parameters is un-significant. So we need to reduce our model. We do it 
 
 
 ```{r}
-train_leapForward(data = train_data, formula = tax ~ .)$model
-
-model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
-summary(model_lm)
+# train_leapForward(data = train_data, formula = tax ~ .)$model
+# 
+# model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+# summary(model_lm)
 ```
 
 We can see that the model choosen contains the expnatory variables: `zn`, `indus`, `rad` and `medv`. 
