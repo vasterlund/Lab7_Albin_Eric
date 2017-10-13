@@ -5,7 +5,7 @@
 #'@export
 train_leapForward<-function(formula, data){
   
-  model_leap_forward <- train(formula ,data , method = "leapForward")
+  model_leap_forward <- caret::train(formula ,data , method = "leapForward")
   
   summary_model_leap_forward <-summary(model_leap_forward)
   

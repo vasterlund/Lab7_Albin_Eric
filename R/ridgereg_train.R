@@ -53,7 +53,7 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
       set.seed(set_seed)
     }
     data(BostonHousing)
-    training <- createDataPartition(BostonHousing$tax,p = p)
+    training <- caret::createDataPartition(BostonHousing$tax,p = p)
     data <- BostonHousing[training$Resample1, ]
   }
   
@@ -64,15 +64,15 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
   
   
   if(cross_val==FALSE){
-    return(train(formula  ,data = data, ridgeregg))
+    return(caret::train(formula  ,data = data, ridgeregg))
   }
   else if (cross_val==TRUE){
-    fitControl <- trainControl(## 10-fold CV
+    fitControl <- caret::trainControl(## 10-fold CV
       method = "repeatedcv",
       number = fold_count,
       ## repeated ten times
       repeats = repeat_count)
-    return(train(formula ,data = data, method = ridgeregg,trControl = fitControl))
+    return(caret::train(formula ,data = data, method = ridgeregg,trControl = fitControl))
     
     
   }
