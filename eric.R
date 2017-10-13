@@ -206,7 +206,7 @@ train_data[,-10][hej$which[4,-1]]
 model_leap_forward$modelInfo
 
 
-ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data ,lambda=seq(0.1,0.5,0.1))$print()
+ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data)$print()
 
 
 
@@ -257,8 +257,9 @@ ridgereg_train<-function(lambda=0){
 ####################
 
 
+data <- train_data
 
-
+formula <- tax ~ zn + indus + rad + medv 
 
 getModelInfo(model = "lm", regex = FALSE)
 
@@ -268,7 +269,9 @@ lambda=c(0.5, 0.4)
 
 train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg)
 
+hej <- ridgereg_train()
 
+hej$finalModel$Coef
 
 
 hej$finalModel$print()
@@ -283,7 +286,7 @@ fitControl <- trainControl(## 10-fold CV
 
 
 
-train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg, trControl = fitControl)
+train(tax ~ zn + indus + rad + medv  ,data = train_data, method = ridgeregg)
 
 
 
@@ -295,5 +298,13 @@ ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data)
 
 
 
+
+
+
+
+
+
+
+lm.ridge(formula,data)
 
 

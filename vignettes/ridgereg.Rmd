@@ -25,6 +25,7 @@ We will devide the `BostonHousing` dataset in to a training and a test set.
 
 ```{r}
 set.seed(12345)
+
 training <- createDataPartition(BostonHousing$tax,p = 0.7)
 
 train_data <- BostonHousing[training$Resample1, ]
@@ -98,13 +99,23 @@ We will do a 10-fold cross-validation in the training data set.
 
 ```{r}
 
-ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE)
+ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE)
 
 ```
 
 
 We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$.
 
+
+## 6)
+
+
+```{r, echo=FALSE}
+
+ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE)
+
+
+```
 
 
 

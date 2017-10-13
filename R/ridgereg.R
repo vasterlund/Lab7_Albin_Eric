@@ -46,6 +46,13 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                           # i=1
                           ###
                           
+                          
+                          ## QR ##
+                          QR <- qr(x)
+                          R <- qr.R(QR)
+                          #Q <- qr.Q(QR)
+                          
+                          
                           fits_lista<-list()
                           beta_lista<-list()
                           for ( i in 1:length(lambda)){
@@ -55,8 +62,10 @@ ridgereg<-setRefClass("ridgereg", fields = list(formula="formula",
                             I_lambda<-matrix(nrow=ncol(x),ncol=ncol(x),data = 0)
                             diag(I_lambda)<-anvanda_lambda
                             
+                            b_hat<-(solve((t(R)%*%R)+I_lambda))%*%(t(x)%*%y)
                             
-                            b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
+                            
+                            #b_hat<-(solve((t(x)%*%x)+I_lambda))%*%(t(x)%*%y)
                             y_fits<-x%*%b_hat
                             e<-y-y_fits
                             
