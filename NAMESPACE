@@ -2,5 +2,6 @@
 
 export(ridgereg)
 export(ridgereg_train)
+export(train_leapForward)
 export(visualize_airport_delays)
 exportClasses(ridgereg)

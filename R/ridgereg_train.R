@@ -44,6 +44,7 @@ ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,repeat_count=10,
   ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
     if (!is.data.frame(newdata)) 
       newdata <- as.data.frame(newdata)
+    newdata <- scale(newdata)
     modelFit$predict(newdata)
   }
   

@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Lab7SpaghettiBolognese"
+author: "Albin and Eric"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -49,15 +49,10 @@ A lot of parameters is un-significant. So we need to reduce our model. We do it 
 
 
 ```{r}
-model_leap_forward <- train(tax ~ .  ,data = train_data, method = "leapForward")
-
-summary_model_leap_forward <-summary(model_leap_forward)
-summary_model_leap_forward$which
+train_leapForward()$model
 
 model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
 summary(model_lm)
-
-
 ```
 
 We can see that the model choosen contains the expnatory variables: `zn`, `indus`, `rad` and `medv`. 
@@ -69,11 +64,11 @@ We can see that the model choosen contains the expnatory variables: `zn`, `indus
 Now we want to evaluate the model and compare it with the other model in the forward selection.
 
 ```{r}
-model_leap_forward
+train_leapForward()$leapForward
 
 ```
 
-The final model have smalest RMSE, and highest adjusted r-square which make the model the best one. 
+The final model have smalest RMSE, and highest adjusted r-square which makes the model the best one. 
 
 
 
@@ -83,8 +78,7 @@ The final model have smalest RMSE, and highest adjusted r-square which make the 
 In this task we will test different $\lambda$ for our `ridereg()` function. We had to do a function with our train for our vingnette to actually work.
 
 ```{r}
-# List of our own model
-ridgereg_train(lambda = c(3,4,6,8,5), normalize = FALSE)
+ridgereg_train(lambda = c(3,4,6,8,5), normalize = TRUE)
 
 ```
 
@@ -99,7 +93,7 @@ We will do a 10-fold cross-validation in the training data set.
 
 ```{r}
 
-ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE,normalize = FALSE)
+ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE,normalize = TRUE)
 
 ```
 
@@ -110,18 +104,17 @@ We perform the cross-validation 10 times for $\lambda = 3,4,6,8, 5$. We set the 
 ## 6)
 
 
-```{r, echo=FALSE}
-
-#ridgereg_train(lambda = c(0,3,4,6,8,5),cross_val = TRUE, normalize = FALSE)
+We can see that by just looking at the `RSME` value the model with the lowest is from the cross-validated model with $\lambda = 3$.
 
 
+
+```{r}
+model <- ridgereg_train(lambda = c(3,4,6,8,5),cross_val = TRUE,normalize = TRUE)
+model$finalModel$print()
 ```
 
 
-
-
-
-
+We recive a print-out from the final model.
 
 
 
