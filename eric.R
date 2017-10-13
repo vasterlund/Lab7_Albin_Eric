@@ -160,6 +160,10 @@ visualize_airport_delays <- function(){
 visualize_airport_delays()
 
 
+types <- list()
+
+
+
 
 ################################
 
@@ -211,56 +215,66 @@ colnames(train_data)
 
 
 
+################
 
 
-types  <- list(type = "ridgereg", 
-               library = "Lab7SpaghettiBolognese")
+ridgeregg  <- list(type = "Regression", 
+               library = "Lab7SpaghettiBolognese",
+               loop = NULL,
+               prob = NULL)
+
+ridgeregg$parameters <- data.frame(parameter = "lambda",
+                  class = "numeric",
+                  label = "Ridge Regression")
 
 
+ridgeregg$grid <- function (x, y, len = NULL, search = "grid") 
+  data.frame(lambda = c(0.5, 0.4))
 
-types$parameters <- data.frame(parameter = colnames(train_data),
-                               class= rep("numeric", 14)
-                               
-)
 
-GRIDs <- function(x, y, len = NULL, search = "grid") {
-  library(kernlab)
-  ## This produces low, middle and high values for sigma 
-  ## (i.e. a vector with 3 elements). 
-  sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
-  ## To use grid search:
-  if(search == "grid") {
-    out <- expand.grid(sigma = mean(as.vector(sigmas[-2])),
-                       C = 2 ^((1:len) - 3))
-  } else {
-    ## For random search, define ranges for the parameters then
-    ## generate random values for them
-    rng <- extendrange(log(sigmas), f = .75)
-    out <- data.frame(sigma = exp(runif(len, min = rng[1], max = rng[2])),
-                      C = 2^runif(len, min = -5, max = 8))
-  }
+ridgeregg$fit <- function (x, y, wts, param, lev, last, classProbs, ...) 
+{
+  dat <- if (is.data.frame(x)) 
+    x
+  else as.data.frame(x)
+  dat$.outcome <- y
+  out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, ...)
+  
   out
 }
 
-types$grid <- GRIDs
-
-svmFit <- function(x, y, wts, param, lev, last, weights, classProbs, ...) { 
-  ridgereg$new(x, 
-               data=iris,lambda,)$print()
+ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
+  if (!is.data.frame(newdata)) 
+   newdata <- as.data.frame(newdata)
+   modelFit$predict(newdata)
 }
 
 
-
-
-
-train(tax ~ zn + indus + rad + medv  ,data = train_data, types)
-
+####################
 
 
 
 
 
+getModelInfo(model = "lm", regex = FALSE)
 
+
+
+hej <- train(tax ~ zn + indus + rad + medv  ,data = train_data, ridgeregg)
+hej <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+
+
+
+hej$finalModel$print()
+
+
+
+
+
+
+
+
+ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data)
 
 
 
