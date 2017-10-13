@@ -1,9 +1,10 @@
 #'@title Extra
 #'@description Extra
 #'@param lambda lambda
+#'@param data If you dont put in any data 
 #'
 #' @export 
-ridgereg_train<-function(lambda=0){
+ridgereg_train<-function(lambda=0,cross_val=FALSE,fold_count=10,data=NULL,formula=NULL,set_seed=12345,p=0.7){
   
   ridgeregg  <- list(type = "Regression", 
                      library = "Lab7SpaghettiBolognese",
@@ -35,12 +36,35 @@ ridgereg_train<-function(lambda=0){
     modelFit$predict(newdata)
   }
   
-  set.seed(12345)
-  data(BostonHousing)
-  training <- createDataPartition(BostonHousing$tax,p = 0.7)
-  train_data <- BostonHousing[training$Resample1, ]
-  test_data <- BostonHousing[-training$Resample1, ]
+  if(is.null(data)){
+    if(!is.null(set_seed)){
+      set.seed(set_seed)
+    }
+    data(BostonHousing)
+    training <- createDataPartition(BostonHousing$tax,p = p)
+    data <- BostonHousing[training$Resample1, ]
+  }
   
   
-  train(tax ~ zn + indus + rad + medv  ,data = train_data, ridgeregg)
+  if(is.null(formula)){
+    formula<-tax ~ zn + indus + rad + medv
+  }
+  
+  
+  if(cross_val==FALSE){
+    return(train(formula  ,data = train_data, ridgeregg))
+  }
+  else if (cross_val==TRUE){
+    fitControl <- trainControl(## 10-fold CV
+      method = "repeatedcv",
+      number = fold_count,
+      ## repeated ten times
+      repeats = fold_count)
+    return(train(formula ,data = train_data, method = ridgeregg,trControl = fitControl))
+    
+    
+  }
+  
+  
+
 }

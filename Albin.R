@@ -4,7 +4,6 @@ library(plotly)
 library(MASS)
 library(mlbench)
 library(caret)
-library(tidyverse)
 library(car)
 install.packages(car)
 
@@ -114,6 +113,8 @@ ridgereg_train<-function(lambda=0,p=0.7,set_seed=NULL){
   
 }
 ####
+
+ridgereg_train(c(10,20))
 
 a<-ridgereg_train(lambda=seq(0,0.5,0.01))
 train(tax ~ zn + indus + rad + medv  ,data = train_data, a)
