@@ -31,6 +31,7 @@ library(caret)
 library(Lab7SpaghettiBolognese)
 data("BostonHousing")
 #######
+data("BostonHousing")
 set.seed(12345)
 training <- createDataPartition(BostonHousing$tax,p = 0.7)
 train_data <- BostonHousing[training$Resample1, ]
@@ -54,6 +55,97 @@ model_lm <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "l
 summary(model_lm)
 #######
 ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data ,lambda=seq(0.1,0.5,0.1))$print()
+#######
+#######
+#######
+#######
+#######
+#######
+#######
+
+################
+
+
+
+####################
+
+
+getModelInfo(model = "lm", regex = FALSE)
+
+
+
+getModelInfo(model = "lm", regex = FALSE)
+
+####
+ridgereg_train<-function(lambda=0,p=0.7,set_seed=NULL){
+  
+  data(BostonHousing)
+  if(!is.null(set_seed)){
+    set.seed(12345)
+  }
+  training <- createDataPartition(BostonHousing$tax,p = p)
+  train_data <- BostonHousing[training$Resample1, ]
+  test_data <- BostonHousing[-training$Resample1, ]
+  
+  
+  ridgeregg  <- list(type = "Regression", 
+                     library = "Lab7SpaghettiBolognese",
+                     loop = NULL,
+                     prob = NULL)
+  
+  ridgeregg$parameters <- data.frame(parameter = "lambda",
+                                     class = "numeric",
+                                     label = "Ridge Regression")
+  
+  
+  ridgeregg$grid <- function (x, y, len = NULL, search = "grid"){
+    data.frame(lambda = lambda)
+  } 
+  
+  ridgeregg$fit <- function (x, y, wts, param, lev, last, classProbs, ...) {
+    dat <- if (is.data.frame(x)) 
+      x
+    else as.data.frame(x)
+    dat$.outcome <- y
+    out <- ridgereg$new(.outcome ~ ., data=dat ,lambda = param$lambda, ...)
+    
+    out
+  }
+  
+  ridgeregg$predict <- function (modelFit, newdata, submodels = NULL) {
+    if (!is.data.frame(newdata)) 
+      newdata <- as.data.frame(newdata)
+    modelFit$predict(newdata)
+  }
+  
+  
+  ridgeregg
+  
+}
+####
+
+a<-ridgereg_train(lambda=seq(0,0.5,0.01))
+train(tax ~ zn + indus + rad + medv  ,data = train_data, a)
+hej <- train(tax ~ zn + indus + rad + medv  ,data = train_data, method = "lm")
+
+
+
+hej$finalModel$print()
+
+
+
+
+
+
+
+
+ridgereg$new(tax ~ zn + indus + rad + medv, data=train_data)
+
+
+
+
+
+
 
 
 
